@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Course Content</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="course-data.js"></script>
+</head>
+
+<body>
+
+<header>
+    <h1 id="course-title"></h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="scenarios.html">Scenarios</a>
+        <a href="rewards.html">Rewards</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
+</header>
+
+<div class="course-content-box">
+    <img id="course-img" class="course-content-img">
+
+    <p id="course-description"></p>
+
+    <h2>Lessons Included</h2>
+    <ul id="lesson-list"></ul>
+
+    <button onclick="completeCourse(selectedCourse, 50)" class="complete-btn">
+        Mark as Completed (+50 Credits)
+    </button>
+
+    <button class="certificate-btn" onclick="generateCertificate()">
+        Get Certificate
+    </button>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedCourse = urlParams.get("course");
+
+    const course = courseData[selectedCourse];
+
+    document.getElementById("course-title").innerText = selectedCourse;
+    document.getElementById("course-img").src = course.image;
+    document.getElementById("course-description").innerText = course.description;
+
+    course.lessons.forEach(l => {
+        let li = document.createElement("li");
+        li.innerText = l;
+        document.getElementById("lesson-list").appendChild(li);
+    });
+
+    function generateCertificate() {
+        location.href = "certificate.html?course=" + selectedCourse;
+    }
+</script>
+
+</body>
+</html>
