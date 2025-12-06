@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Certificate</title>
+    <style>
+        body { text-align: center; background: #CDEFFF; }
+        .certificate-box {
+            width: 70%;
+            margin: auto;
+            padding: 40px;
+            background: white;
+            border: 8px solid #00AEEF;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="certificate-box">
+    <h1>Certificate of Completion</h1>
+    <p>This is to certify that</p>
+    <h2 id="student-name"></h2>
+    <p>has successfully completed</p>
+    <h2 id="course-name"></h2>
+    <p>Date: <span id="date"></span></p>
+
+    <button onclick="window.print()">Print Certificate</button>
+</div>
+
+<script>
+const p = new URLSearchParams(location.search);
+document.getElementById("student-name").innerText = localStorage.getItem("username");
+document.getElementById("course-name").innerText = p.get("course");
+document.getElementById("date").innerText = new Date().toLocaleDateString();
+</script>
+
+</body>
+</html>
