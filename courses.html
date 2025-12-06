@@ -8,31 +8,46 @@
 <body>
 
 <header>
-    <h1>Courses</h1>
+    <h1>Cyber Awareness Courses</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="courses.html">Courses</a>
+        <a href="quiz.html">Quiz</a>
+        <a href="scenarios.html">Scenarios</a>
+        <a href="rewards.html">Rewards</a>
+        <a href="dashboard.html">Dashboard</a>
+    </nav>
 </header>
 
 <div class="courses-container">
 
-    <div class="course-card">
-        <h2>Phishing Awareness</h2>
-        <p>Learn to detect fake emails, links, and scams.</p>
-        <button onclick="completeCourse('Phishing Awareness', 50)">Complete Course (+50 Credits)</button>
-    </div>
+    <script>
+        const arr = [
+            "Phishing Awareness",
+            "Password Safety",
+            "Online Privacy",
+            "Social Engineering Scams",
+            "Device Security & Malware",
+            "Safe Social Media Usage",
+            "Cyberbullying & Harassment",
+            "Safe Online Shopping"
+        ];
+    </script>
 
-    <div class="course-card">
-        <h2>Password Safety</h2>
-        <p>Create strong, secure passwords and avoid identity theft.</p>
-        <button onclick="completeCourse('Password Safety', 40)">Complete Course (+40 Credits)</button>
-    </div>
-
-    <div class="course-card">
-        <h2>Online Privacy</h2>
-        <p>Stay anonymous and protect your digital footprint.</p>
-        <button onclick="completeCourse('Online Privacy', 60)">Complete Course (+60 Credits)</button>
-    </div>
+    <script>
+        arr.forEach(c => {
+            document.write(`
+            <div class="course-card">
+                <img src="https://via.placeholder.com/270x150?text=${c.replace(/ /g, '+')}" class="course-img">
+                <h2>${c}</h2>
+                <p>Click below to view complete course material.</p>
+                <button onclick="location.href='course-content.html?course=${c}'">View Course</button>
+            </div>
+            `)
+        });
+    </script>
 
 </div>
 
-<script src="script.js"></script>
 </body>
 </html>
