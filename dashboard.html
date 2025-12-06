@@ -1,19 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Dashboard • CyberShield Academy</title>
+<link rel="stylesheet" href="style.css">
+<script src="course-data.js"></script>
 </head>
 
-<body>
+<body onload="loadDashboard()">
 
-<h1>Your Dashboard</h1>
-<h2>Total Credits: <span id="credit-display">0</span></h2>
+<div id="doraemon-cursor" aria-hidden="true">
+  <svg id="bell-svg" viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><defs><filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.25"/></filter></defs><g filter="url(#shadow)"><circle cx="32" cy="20" r="18" fill="#5fb0d6"/><ellipse cx="32" cy="35" rx="22" ry="14" fill="#ffe07a"/><rect x="14" y="32" width="36" height="6" rx="3" fill="#ffdd57" /><circle cx="32" cy="36" r="4" fill="#d86f00"/><path d="M22 24c3 6 18 6 21 0" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/></g></svg>
+</div>
 
-<h3>Completed Courses:</h3>
-<ul id="course-list"></ul>
+<header class="dash-header site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo-mark" aria-hidden="true"><svg viewBox="0 0 48 48" width="40" height="40"><circle cx="24" cy="16" r="12" fill="#5fb0d6"/><rect x="8" y="26" width="32" height="12" rx="6" fill="#fff"/><circle cx="24" cy="30" r="3" fill="#ffdd57"/></svg></div>
+        <div class="brand-text"><div class="title">CyberShield Academy</div></div>
+      </div>
+      <nav class="nav"><a class="btn ghost" href="dashboard.html">Dashboard</a><a class="btn" href="courses.html">Courses</a></nav>
+    </div>
+</header>
+
+<section class="container" style="padding:22px 18px;">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+    <div>
+      <h1 style="margin:0">Welcome, <span id="user-name"></span>!</h1>
+      <div class="small">Keep learning — your credits are waiting.</div>
+    </div>
+    <div class="credits-box glass-card" style="text-align:right;min-width:140px">
+      <div class="small">Your Credits</div>
+      <div style="font-weight:900;font-size:24px" id="credit-display">0</div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:18px">Your Learning Progress</h2>
+  <div class="course-grid" id="dashboard-course-list"></div>
+
+</section>
 
 <script src="script.js"></script>
-
 </body>
 </html>
