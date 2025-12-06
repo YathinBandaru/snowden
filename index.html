@@ -1,36 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>CyberShield Academy</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CyberShield Academy — Learn Online Safety</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Custom Doraemon-bell cursor element (follows mouse) -->
+  <div id="doraemon-cursor" aria-hidden="true">
+    <svg id="bell-svg" viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+          <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.25"/>
+        </filter>
+      </defs>
+      <g filter="url(#shadow)">
+        <circle cx="32" cy="20" r="18" fill="#5fb0d6"/>
+        <ellipse cx="32" cy="35" rx="22" ry="14" fill="#ffe07a"/>
+        <rect x="14" y="32" width="36" height="6" rx="3" fill="#ffdd57" />
+        <circle cx="32" cy="36" r="4" fill="#d86f00"/>
+        <path d="M22 24c3 6 18 6 21 0" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/>
+      </g>
+    </svg>
+  </div>
 
-<header>
-    <h1>CyberShield Academy</h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="courses.html">Courses</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="scenarios.html">Scenarios</a>
-        <a href="rewards.html">Rewards</a>
-        <a href="dashboard.html">Dashboard</a>
-    </nav>
-</header>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 48 48" width="40" height="40" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="16" r="12" fill="#5fb0d6"/>
+            <rect x="8" y="26" width="32" height="12" rx="6" fill="#fff"/>
+            <circle cx="24" cy="30" r="3" fill="#ffdd57"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <div class="title">CyberShield Academy</div>
+          <div class="subtitle">Friendly lessons on staying safe online</div>
+        </div>
+      </div>
 
-<section class="hero">
-    <h2>Learn Cyber Safety. Stay Secure. Earn Rewards.</h2>
-    <p>Interactive courses, real-life scenarios, quizzes, and certificates!</p>
-    <button onclick="location.href='courses.html'">Start Learning</button>
-</section>
+      <nav class="nav">
+        <a class="btn ghost" href="login.html">Login</a>
+        <a class="btn" href="courses.html">All Courses</a>
+      </nav>
+    </div>
+  </header>
 
-<script>
-if (!localStorage.getItem("username")) {
-    const name = prompt("Enter your name for certificates:");
-    if (name) localStorage.setItem("username", name);
-}
-</script>
+  <main>
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-left glass">
+          <h1>Stay safe. Learn confidently.</h1>
+          <p class="lead">Interactive courses, quizzes, and real-life scenarios to build your cyber awareness. Earn credits and redeem rewards while you learn.</p>
 
+          <div class="cta-row">
+            <a class="btn large" href="courses.html">Explore Courses</a>
+            <a class="btn outline" href="login.html">Sign Up — it's free</a>
+          </div>
+
+          <div class="features">
+            <div class="feature">
+              <strong>Friendly</strong>
+              <span>Beginner-friendly lessons with real examples.</span>
+            </div>
+            <div class="feature">
+              <strong>Gamified</strong>
+              <span>Earn credits, redeem coupons, and get certificates.</span>
+            </div>
+            <div class="feature">
+              <strong>Practical</strong>
+              <span>Scenario-based practice you can use today.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-right">
+          <div class="mascot-card glass hover-tilt">
+            <svg viewBox="0 0 240 240" class="mascot" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="120" cy="80" r="60" fill="#61b9db" />
+              <ellipse cx="120" cy="95" rx="48" ry="36" fill="#ffffff" />
+              <circle cx="105" cy="80" r="8" fill="#1f2b3a"/>
+              <circle cx="135" cy="80" r="8" fill="#1f2b3a"/>
+              <path d="M96 110 q24 20 48 0" stroke="#1f2b3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <circle cx="120" cy="145" r="28" fill="#ffd85a"/>
+              <circle cx="120" cy="145" r="10" fill="#d86f00"/>
+            </svg>
+
+            <div class="mascot-text">
+              <h3>Hi! I'm the Guard</h3>
+              <p>I'll help you spot risks — move your mouse and try clicking the bell. Animations make learning fun!</p>
+              <div class="tiny-note">Tip: Hover course cards to see glass effect and progress bars.</div>
+            </div>
+          </div>
+
+          <div class="course-preview-grid">
+            <article class="mini-card glass">
+              <div class="icon">
+                <svg viewBox="0 0 64 64" width="48" height="48"><rect x="6" y="12" width="52" height="36" rx="6" fill="#e9f9ff"/><path d="M8 22h48" stroke="#5fb0d6" stroke-width="2"/><circle cx="20" cy="34" r="6" fill="#5fb0d6"/></svg>
+              </div>
+              <h4>Phishing</h4>
+              <div class="progress" data-value="68">
+                <div class="progress-bar"></div>
+              </div>
+            </article>
+
+            <article class="mini-card glass">
+              <div class="icon">
+                <svg viewBox="0 0 64 64" width="48" height="48"><rect x="12" y="20" width="40" height="28" rx="6" fill="#fff7e6"/><path d="M32 28v-6a6 6 0 1 1 12 0v6" stroke="#5fb0d6" stroke-width="2" fill="none"/><circle cx="32" cy="38" r="3" fill="#5fb0d6"/></svg>
+              </div>
+              <h4>Password Safety</h4>
+              <div class="progress" data-value="40">
+                <div class="progress-bar"></div>
+              </div>
+            </article>
+
+            <article class="mini-card glass">
+              <div class="icon">
+                <svg viewBox="0 0 64 64" width="48" height="48"><circle cx="32" cy="28" r="16" fill="#eaf9ff"/><rect x="16" y="36" width="32" height="14" rx="6" fill="#5fb0d6"/></svg>
+              </div>
+              <h4>Online Privacy</h4>
+              <div class="progress" data-value="52">
+                <div class="progress-bar"></div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="more container">
+      <h2>How it works</h2>
+      <div class="how-grid">
+        <div class="step glass">
+          <div class="num">1</div>
+          <h4>Learn</h4>
+          <p>Read clear, example-driven content for each threat type.</p>
+        </div>
+        <div class="step glass">
+          <div class="num">2</div>
+          <h4>Practice</h4>
+          <p>Interactive quizzes & scenarios to check your understanding.</p>
+        </div>
+        <div class="step glass">
+          <div class="num">3</div>
+          <h4>Earn</h4>
+          <p>Gain credits and redeem them for Indian-brand coupons.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="container footer">
+      <div>© CyberShield Academy — Learn safe habits. Built with a pastel, friendly theme.</div>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
