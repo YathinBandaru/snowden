@@ -1,23 +1,260 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Quiz - CyberShield</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quiz • CyberShield Academy</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .quiz-wrap{max-width:1000px;margin:28px auto;padding:18px}
+    .quiz-card{background:linear-gradient(180deg,rgba(255,255,255,0.92),rgba(255,255,255,0.8));padding:20px;border-radius:14px;box-shadow:0 12px 30px rgba(10,20,30,0.06)}
+    .category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:12px}
+    .cat-card{padding:12px;border-radius:12px;background:var(--glass);cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:transform .16s}
+    .cat-title{font-weight:800;color:var(--accent-dark)}
+    .question-area{display:grid;grid-template-columns:1fr 180px;gap:18px;align-items:start;margin-top:18px}
+    @media (max-width:900px){ .question-area{grid-template-columns:1fr; } .right-panel{order:-1} }
+    .q-card{padding:18px;border-radius:14px;background:linear-gradient(180deg,#fff,#fbfbff);box-shadow:0 12px 30px rgba(10,20,30,0.06)}
+    .q-text{font-size:20px;font-weight:800;color:#053b4a;margin-bottom:14px}
+    .options-grid{display:flex;flex-direction:column;gap:10px}
+    .opt-btn{padding:12px;border-radius:12px;border:1px solid rgba(10,20,30,0.06);background:linear-gradient(180deg,#fff,#fbfbff);cursor:pointer;font-weight:800}
+    .opt-btn.correct{border:2px solid #2bb673;background:linear-gradient(90deg,#dff8ea,#e6fffb);}
+    .opt-btn.wrong{border:2px solid #f18d8d;background:linear-gradient(90deg,#fff1f1,#fff7f7);}
+    .progress-ring{width:140px;height:140px;display:flex;align-items:center;justify-content:center}
+    .pr-text{font-weight:900;color:var(--accent-dark)}
+    .glass-card{background:var(--glass);padding:12px;border-radius:12px;box-shadow:0 12px 30px rgba(10,20,30,0.04)}
+    .explain{margin-top:12px;padding:12px;border-radius:10px;background:#fbfffe;border:1px solid #e6f7f9}
+  </style>
 </head>
-
 <body>
+  <div id="doraemon-cursor" aria-hidden="true"><svg id="bell-svg" viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><defs><filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.25"/></filter></defs><g filter="url(#shadow)"><circle cx="32" cy="20" r="18" fill="#5fb0d6"/><ellipse cx="32" cy="35" rx="22" ry="14" fill="#ffe07a"/><rect x="14" y="32" width="36" height="6" rx="3" fill="#ffdd57" /><circle cx="32" cy="36" r="4" fill="#d86f00"/><path d="M22 24c3 6 18 6 21 0" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/></g></svg></div>
 
-<h1>Cyber Quiz</h1>
+  <script src="course-data.js"></script>
+  <script src="script.js"></script>
 
-<div id="quiz-box">
-    <p id="question">Loading question...</p>
-    <button class="quiz-btn" onclick="answer(true)">Safe</button>
-    <button class="quiz-btn" onclick="answer(false)">Dangerous</button>
-</div>
+  <main class="quiz-wrap container">
+    <div class="quiz-card">
+      <div id="category-section">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <h3 style="margin:0">Available Categories</h3>
+          <div class="small-note">Select one to begin</div>
+        </div>
 
-<p id="result"></p>
+        <div class="category-grid" id="category-grid" style="margin-top:12px"></div>
+      </div>
 
-<script src="script.js"></script>
+      <div id="active-quiz" style="display:none;margin-top:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <h3 id="quiz-title" style="margin:0">Quiz</h3>
+            <div class="small-note" id="quiz-sub">Answer the questions to test your knowledge.</div>
+          </div>
+          <div class="small-note">Progress is saved per course.</div>
+        </div>
 
+        <div class="question-area">
+          <div class="q-card">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div class="q-text" id="q-text">Question will appear here</div>
+              <div class="small">⏱ <span id="timer">20</span>s</div>
+            </div>
+
+            <div class="options-grid" id="options-grid"></div>
+
+            <div style="margin-top:12px">
+              <div id="explain-box" class="explain" style="display:none"></div>
+            </div>
+
+            <div style="display:flex;justify-content:space-between;margin-top:14px">
+              <div><button class="btn ghost" id="prev-btn" onclick="prevQ()" disabled>Previous</button></div>
+              <div style="display:flex;gap:8px"><button class="btn ghost" id="skip-btn" onclick="skipQ()">Skip</button><button class="btn" id="next-btn" onclick="nextQ()" disabled>Next</button></div>
+            </div>
+          </div>
+
+          <div class="right-panel">
+            <div class="progress-ring glass-card">
+              <svg id="ring" width="120" height="120" viewBox="0 0 120 120">
+                <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#61b9db"/><stop offset="1" stop-color="#7bd4e8"/></linearGradient></defs>
+                <circle cx="60" cy="60" r="48" stroke="#ecf6f8" stroke-width="14" fill="none"/>
+                <circle id="ring-fill" cx="60" cy="60" r="48" stroke="url(#g1)" stroke-width="14" stroke-linecap="round" fill="none" stroke-dasharray="302" stroke-dashoffset="302" transform="rotate(-90 60 60)"/>
+                <text x="60" y="66" text-anchor="middle" class="pr-text" id="ring-text">0%</text>
+              </svg>
+            </div>
+
+            <div class="glass-card" style="padding:12px;border-radius:12px">
+              <div style="display:flex;justify-content:space-between">
+                <div style="font-weight:800;color:#053b4a">Score</div>
+                <div id="score-display" style="font-weight:900">0</div>
+              </div>
+              <div style="height:8px;margin-top:8px;background:#f1f6f8;border-radius:999px;overflow:hidden">
+                <div id="score-bar" style="height:8px;width:0%;background:linear-gradient(90deg,#61b9db,#7bd4e8)"></div>
+              </div>
+            </div>
+
+            <div class="glass-card" style="padding:12px;border-radius:12px">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div>
+                  <div class="small-note">Questions</div>
+                  <div id="q-count" style="font-weight:800">0 / 0</div>
+                </div>
+                <div>
+                  <div class="small-note">Credits on pass</div>
+                  <div id="pass-credits" style="font-weight:800">30</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="text-align:center;margin-top:12px">
+              <button class="btn ghost" onclick="endQuiz()">End Quiz</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="quiz-result" style="display:none;margin-top:18px">
+        <div class="result-card">
+          <div class="result-score" id="result-score">0 / 0</div>
+          <div id="result-text" style="font-weight:800;margin-top:8px;color:#1b474f">You scored 0%</div>
+          <div style="margin-top:12px" id="result-note"></div>
+          <div style="margin-top:14px;display:flex;gap:8px;justify-content:center">
+            <button class="btn" onclick="retakeQuiz()">Retake</button>
+            <button class="btn ghost" onclick="location.href='dashboard.html'">Back to Dashboard</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+<script>
+  // quiz page script using window.quizBank & functions from script.js
+  let activeCourseId = null, questions = [], order = [], indexQ = 0, score = 0, answers = [], passCredits = 30;
+  let timer = null, timeLeft = 20;
+
+  function initQuizPage() {
+    const grid = document.getElementById('category-grid');
+    grid.innerHTML = "";
+    (window.courses || []).forEach(c=>{
+      const card = document.createElement('div'); card.className='cat-card glass-card';
+      card.innerHTML = `<div style="display:flex;gap:10px;align-items:center"><div style="width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#eaf9ff,#fff7ea)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="5" fill="#61b9db"/><rect x="4" y="14" width="16" height="6" rx="3" fill="#fff"/><circle cx="12" cy="17" r="2" fill="#ffd85a"/></svg></div><div style="flex:1"><div class="cat-title">${escapeHtml(c.title)}</div><div class="cat-desc">${(c.description||'').slice(0,120)}${(c.description||'').length>120?'...':''}</div></div></div><div style="margin-top:8px"><button class="btn start-btn" onclick="beginCategory('${c.id}')">Start Quiz</button></div>`;
+      grid.appendChild(card);
+    });
+
+    const q = new URLSearchParams(window.location.search).get('course');
+    if (q) {
+      const found = (window.courses||[]).find(x=>x.id===q||x.title===q);
+      if (found) setTimeout(()=>beginCategory(found.id),200);
+    }
+    document.querySelectorAll('.username-fill').forEach(e=>e.innerText = getUser() || 'Guest');
+  }
+
+  function beginCategory(cid) {
+    if (!window.quizBank || !window.quizBank[cid]) { alert("No quiz available for this category."); return; }
+    activeCourseId = cid;
+    questions = (window.quizBank[cid] || []).map(q=>Object.assign({},q));
+    order = questions.map((_,i)=>i).sort(()=>Math.random()-0.5);
+    indexQ = 0; score = 0; answers = new Array(questions.length).fill(null);
+    passCredits = (window.courses.find(c=>c.id===cid) || {}).quizCredits || 30;
+    document.getElementById('pass-credits').innerText = passCredits;
+    document.getElementById('category-section').style.display='none';
+    document.getElementById('active-quiz').style.display='block';
+    document.getElementById('quiz-result').style.display='none';
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    clearInterval(timer);
+    timeLeft = 20; document.getElementById('timer').innerText = timeLeft;
+    const qObj = questions[order[indexQ]];
+    document.getElementById('q-text').innerText = qObj.q || "Question";
+    const opts = document.getElementById('options-grid'); opts.innerHTML = "";
+    const options = Array.isArray(qObj.a)? qObj.a : (qObj.a||qObj.options||[]);
+    options.forEach((opt, i)=>{
+      const b = document.createElement('button'); b.className='opt-btn'; b.innerText = opt; b.setAttribute('data-i',i);
+      b.onclick = ()=> selectOption(i,b);
+      opts.appendChild(b);
+    });
+
+    document.getElementById('explain-box').style.display = 'none';
+    document.getElementById('prev-btn').disabled = indexQ===0;
+    document.getElementById('next-btn').disabled = true;
+    document.getElementById('q-count').innerText = (indexQ+1) + " / " + questions.length;
+    setRingProgress(Math.round((indexQ/questions.length)*100));
+    startTimer();
+  }
+
+  function startTimer(){
+    document.getElementById('timer').innerText = timeLeft;
+    timer = setInterval(()=>{
+      timeLeft--; document.getElementById('timer').innerText = timeLeft;
+      if (timeLeft <=0){ clearInterval(timer); timeUp(); }
+    },1000);
+  }
+
+  function timeUp(){
+    lockOptions();
+    showExplanation("Time's up. The correct answer is highlighted.", true);
+    setTimeout(()=> {
+      if (indexQ < questions.length-1){ indexQ++; renderQuestion(); } else finishQuiz();
+    }, 900);
+  }
+
+  function selectOption(idx, btnEl){
+    clearInterval(timer);
+    const qObj = questions[order[indexQ]];
+    let correctIdx = (typeof qObj.correct === 'number') ? qObj.correct : (qObj.correct === true ? 0 : (qObj.correct===false?1:0));
+    // map boolean correct with options "True","False"
+    if (typeof qObj.correct === 'boolean' && Array.isArray(qObj.a) && (qObj.a[0].toLowerCase().includes('true')||qObj.a[1].toLowerCase().includes('false'))) {
+      correctIdx = qObj.correct ? 0 : 1;
+    }
+    answers[indexQ] = idx;
+    const buttons = document.querySelectorAll('.opt-btn'); buttons.forEach(b=>b.disabled=true);
+    // highlight correct
+    buttons.forEach(b=>{ const i=parseInt(b.getAttribute('data-i'),10); if (i===correctIdx) b.classList.add('correct'); });
+    if (idx===correctIdx){ btnEl.classList.add('correct'); score++; updateScore(); }
+    else { btnEl.classList.add('wrong'); }
+    showExplanation(qObj.explanation || "Explanation not available.", idx===correctIdx);
+    setTimeout(()=> {
+      if (indexQ < questions.length-1){ indexQ++; renderQuestion(); } else finishQuiz();
+    }, 900);
+  }
+
+  function lockOptions(){ document.querySelectorAll('.opt-btn').forEach(b=>b.disabled=true); }
+
+  function showExplanation(text){ const box = document.getElementById('explain-box'); box.innerText = text || ''; box.style.display = 'block'; }
+
+  function prevQ(){ if (indexQ>0){ indexQ--; renderQuestion(); } }
+  function nextQ(){ if (indexQ < questions.length-1){ indexQ++; renderQuestion(); } }
+  function skipQ(){ indexQ = Math.min(indexQ+1, questions.length-1); renderQuestion(); }
+
+  function setRingProgress(pct){ const circumference = 2*Math.PI*48; const offset = Math.round(circumference*(1 - pct/100)); const rf = document.getElementById('ring-fill'); if (rf) rf.style.strokeDashoffset = offset; document.getElementById('ring-text').innerText = Math.round(pct) + "%"; }
+  function updateScore(){ document.getElementById('score-display').innerText = score; const pct = Math.round((score / Math.max(1, questions.length))*100); document.getElementById('score-bar').style.width = pct + "%"; }
+
+  function finishQuiz(){
+    clearInterval(timer);
+    document.getElementById('active-quiz').style.display='none';
+    document.getElementById('quiz-result').style.display='block';
+    document.getElementById('result-score').innerText = `${score} / ${questions.length}`;
+    const pct = Math.round((score / Math.max(1,questions.length))*100);
+    document.getElementById('result-text').innerText = `Score: ${pct}%`;
+    const passed = pct >= 60;
+    const note = document.getElementById('result-note');
+    if (passed){ note.innerHTML = `<div style="color:#0b663e;font-weight:800">Passed! You earned ${passCredits} credits.</div>`; addCredits(passCredits); }
+    else note.innerHTML = `<div style="color:#7a1a1a">Not passed. Try again to earn credits.</div>`;
+
+    try {
+      const user = getUser() || 'guest';
+      localStorage.setItem(`quiz_result_${activeCourseId}_${user}`, JSON.stringify({ score, total:questions.length, percent:pct, passed, time:Date.now() }));
+      const prev = getCourseProgress(activeCourseId) || 0;
+      const newProg = Math.max(prev, pct);
+      setCourseProgress(activeCourseId, newProg);
+    } catch(e){}
+    try { refreshDashboardIfPresent(); } catch(e){}
+  }
+
+  function endQuiz(){ if (confirm("End quiz early?")) finishQuiz(); }
+  function retakeQuiz(){ beginCategory(activeCourseId); document.getElementById('quiz-result').style.display='none'; }
+
+  document.addEventListener('DOMContentLoaded', initQuizPage);
+</script>
 </body>
 </html>

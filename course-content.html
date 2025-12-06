@@ -1,65 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Course Content</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="course-data.js"></script>
+  <meta charset="UTF-8" />
+  <title>Course Content - CyberShield Academy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="course-data.js" defer></script>
+  <script src="script.js" defer></script>
+  <style>
+    .course-header { padding: 30px; text-align:center; background:var(--glass); border-radius:12px; margin:18px; }
+    .section-list { max-width:900px;margin:20px auto; display:flex;flex-direction:column;gap:18px; padding:12px; }
+    .course-section { padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8)); box-shadow:0 8px 26px rgba(20,30,50,0.06); transition:transform .2s; }
+    .course-section:hover{transform:translateY(-6px)}
+    .btn-complete{padding:12px 18px;border-radius:12px;background:linear-gradient(90deg,#61b9db,#7bd4e8);border:none;color:#04323a;font-weight:900}
+  </style>
 </head>
 
 <body>
+  <div id="doraemon-cursor" aria-hidden="true">
+    <svg id="bell-svg" viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><defs><filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.25"/></filter></defs><g filter="url(#shadow)"><circle cx="32" cy="20" r="18" fill="#5fb0d6"/><ellipse cx="32" cy="35" rx="22" ry="14" fill="#ffe07a"/><rect x="14" y="32" width="36" height="6" rx="3" fill="#ffdd57" /><circle cx="32" cy="36" r="4" fill="#d86f00"/><path d="M22 24c3 6 18 6 21 0" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/></g></svg>
+  </div>
 
-<header>
-    <h1 id="course-title"></h1>
-    <nav>
-        <a href="index.html">Home</a>
-        <a href="courses.html">Courses</a>
-        <a href="quiz.html">Quiz</a>
-        <a href="scenarios.html">Scenarios</a>
-        <a href="rewards.html">Rewards</a>
-        <a href="dashboard.html">Dashboard</a>
-    </nav>
-</header>
+  <nav class="site-header"><div class="container header-inner"><div class="brand"><div class="brand-text"><div class="title">CyberShield Academy</div></div></div><nav class="nav"><a class="btn ghost" href="dashboard.html">Dashboard</a><a class="btn" href="courses.html">Courses</a></nav></div></nav>
 
-<div class="course-content-box">
-    <img id="course-img" class="course-content-img">
+  <header class="course-header">
+    <h1 class="course-title" id="course-title">Loading...</h1>
+    <p class="small">Your learning journey begins here.</p>
+  </header>
 
-    <p id="course-description"></p>
+  <div class="section-list" id="section-list"></div>
 
-    <h2>Lessons Included</h2>
-    <ul id="lesson-list"></ul>
-
-    <button onclick="completeCourse(selectedCourse, 50)" class="complete-btn">
-        Mark as Completed (+50 Credits)
-    </button>
-
-    <button class="certificate-btn" onclick="generateCertificate()">
-        Get Certificate
-    </button>
-</div>
-
-<script src="script.js"></script>
+  <div style="text-align:center;margin-bottom:40px">
+    <button class="btn-complete" onclick="finishCourse()">Mark Course Complete ✔</button>
+  </div>
 
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const selectedCourse = urlParams.get("course");
+  function getQueryParam(name){ const p=new URLSearchParams(window.location.search); return p.get(name); }
+  let currentCourseObj = null;
 
-    const course = courseData[selectedCourse];
+  function loadCourseContent() {
+    requireLoginOrRedirect();
+    const courseParam = getQueryParam('course') || '';
+    // support passing id or title
+    const c = (window.courses || []).find(x => x.id === courseParam || x.title === courseParam || encodeURIComponent(x.title) === courseParam);
+    if (!c) { document.getElementById('course-title').innerText = "Course Not Found"; return; }
+    currentCourseObj = c;
+    document.getElementById('course-title').innerText = c.title;
+    const container = document.getElementById('section-list');
+    container.innerHTML = "";
 
-    document.getElementById("course-title").innerText = selectedCourse;
-    document.getElementById("course-img").src = course.image;
-    document.getElementById("course-description").innerText = course.description;
-
-    course.lessons.forEach(l => {
-        let li = document.createElement("li");
-        li.innerText = l;
-        document.getElementById("lesson-list").appendChild(li);
+    c.sections.forEach((s, idx) => {
+      const sec = document.createElement('div');
+      sec.className = 'course-section';
+      sec.innerHTML = `<h3 style="margin:0">${idx+1}. ${s.title}</h3><p class="small" style="margin-top:8px">${s.content}</p>
+        <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
+          <button class="btn ghost" onclick="markSection(${idx})">Mark Section Complete</button>
+        </div>`;
+      container.appendChild(sec);
     });
 
-    function generateCertificate() {
-        location.href = "certificate.html?course=" + selectedCourse;
-    }
-</script>
+    // load progress
+    const prog = getCourseProgress(c.id) || 0;
+    // optionally show progress visually
+  }
 
+  function markSection(idx) {
+    if (!currentCourseObj) return;
+    const per = Math.round(100 / currentCourseObj.sections.length);
+    const newProg = Math.min(100, getCourseProgress(currentCourseObj.id) + per);
+    setCourseProgress(currentCourseObj.id, newProg);
+    animateToast("Section marked complete. +" + (currentCourseObj.sections[idx].credit || 10) + " credits");
+    addCredits(currentCourseObj.sections[idx].credit || 10);
+  }
+
+  function finishCourse() {
+    if (!currentCourseObj) return;
+    markCourseComplete(currentCourseObj.id, currentCourseObj.sections.reduce((a,b) => a + (b.credit||0), 0));
+    setCourseProgress(currentCourseObj.id, 100);
+    animateToast("Course completed!");
+    setTimeout(()=> window.location.href = "certificate.html", 900);
+  }
+
+  document.addEventListener('DOMContentLoaded', loadCourseContent);
+</script>
 </body>
 </html>
