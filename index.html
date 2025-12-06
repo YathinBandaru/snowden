@@ -21,10 +21,16 @@
 
 <section class="hero">
     <h2>Learn Cyber Safety. Stay Secure. Earn Rewards.</h2>
-    <p>Interactive courses, real-life scenarios, quizzes, and discount rewards!</p>
+    <p>Interactive courses, real-life scenarios, quizzes, and certificates!</p>
     <button onclick="location.href='courses.html'">Start Learning</button>
 </section>
 
+<script>
+if (!localStorage.getItem("username")) {
+    const name = prompt("Enter your name for certificates:");
+    if (name) localStorage.setItem("username", name);
+}
+</script>
+
 </body>
 </html>
-
