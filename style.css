@@ -1,0 +1,186 @@
+/* -----------------------------
+   GLOBAL STYLES (DORAEMON THEME)
+--------------------------------*/
+body {
+    font-family: "Poppins", sans-serif;
+    background: #CDEFFF;  /* Light Doraemon sky blue */
+    margin: 0;
+    color: #03396C; /* Doraemon outline blue */
+}
+
+header {
+    background: #00AEEF; /* Doraemon main blue */
+    padding: 20px;
+    text-align: center;
+    color: white;
+    border-bottom: 5px solid #F6E21B; /* Doraemon bell yellow */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+header h1 {
+    font-size: 32px;
+    letter-spacing: 1px;
+}
+
+/* NAVIGATION */
+nav a {
+    margin: 0 20px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #F6E21B; /* Doraemon bell yellow */
+    text-shadow: 0 0 10px #fff;
+}
+
+/* HERO SECTION */
+.hero {
+    text-align: center;
+    padding: 80px 20px;
+    background: white;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.hero h2 {
+    color: #00AEEF;
+    font-size: 42px;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 20px;
+}
+
+.hero button {
+    background: #F64A50; /* Doraemon nose red */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 18px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.hero button:hover {
+    background: #D93A40;
+    transform: scale(1.1);
+}
+
+/* COURSE CARDS */
+.courses-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 30px;
+}
+
+.course-card {
+    background: white;
+    width: 270px;
+    margin: 15px;
+    padding: 20px;
+    border-radius: 25px;
+    border: 4px dashed #00AEEF; /* Doraemon-friendly outline */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.course-card h2 {
+    color: #F64A50;
+    margin-bottom: 10px;
+}
+
+/* BUTTON STYLE */
+button {
+    background: #F6E21B; /* Bell yellow */
+    color: #03396C;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-4px);
+    background: #FFD000;
+}
+
+/* SCENARIO & QUIZ CARDS */
+.scenario-box, .reward-card {
+    background: white;
+    margin: 20px auto;
+    padding: 20px;
+    width: 70%;
+    border-radius: 25px;
+    border: 4px dotted #00AEEF;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.quiz-btn {
+    margin: 10px;
+    background: #00AEEF;
+    color: white;
+    border-radius: 20px;
+}
+
+.quiz-btn:hover {
+    background: #008FCA;
+}
+
+/* DASHBOARD */
+#credit-display {
+    font-size: 32px;
+    font-weight: bold;
+    color: #F64A50;
+}
+
+#course-list li {
+    background: white;
+    padding: 10px;
+    margin: 8px;
+    border-radius: 15px;
+    border-left: 6px solid #00AEEF;
+}
+
+/* ADD FUN DORAEMON BUBBLE EFFECTS */
+body::before {
+    content: "";
+    position: fixed;
+    top: -80px;
+    right: -100px;
+    width: 250px;
+    height: 250px;
+    background: #00AEEF;
+    opacity: 0.25;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    bottom: -50px;
+    left: -80px;
+    width: 200px;
+    height: 200px;
+    background: #F6E21B;
+    opacity: 0.2;
+    border-radius: 50%;
+    z-index: -1;
+}
