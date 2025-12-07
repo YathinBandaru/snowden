@@ -20,7 +20,6 @@
 </header>
 
 <div class="courses-container">
-
     <script>
         const arr = [
             "Phishing Awareness",
@@ -32,21 +31,29 @@
             "Cyberbullying & Harassment",
             "Safe Online Shopping"
         ];
-    </script>
 
-    <script>
+        const icons = {
+            "Phishing Awareness": "https://cdn-icons-png.flaticon.com/512/1055/1055646.png",
+            "Password Safety": "https://cdn-icons-png.flaticon.com/512/3064/3064197.png",
+            "Online Privacy": "https://cdn-icons-png.flaticon.com/512/1828/1828479.png",
+            "Social Engineering Scams": "https://cdn-icons-png.flaticon.com/512/6195/6195699.png",
+            "Device Security & Malware": "https://cdn-icons-png.flaticon.com/512/1828/1828843.png",
+            "Safe Social Media Usage": "https://cdn-icons-png.flaticon.com/512/1384/1384063.png",
+            "Cyberbullying & Harassment": "https://cdn-icons-png.flaticon.com/512/535/535234.png",
+            "Safe Online Shopping": "https://cdn-icons-png.flaticon.com/512/1170/1170576.png"
+        };
+
         arr.forEach(c => {
             document.write(`
-            <div class="course-card">
-                <img src="https://via.placeholder.com/270x150?text=${c.replace(/ /g, '+')}" class="course-img">
-                <h2>${c}</h2>
-                <p>Click below to view complete course material.</p>
-                <button onclick="location.href='course-content.html?course=${c}'">View Course</button>
-            </div>
-            `)
+                <div class="course-card">
+                    <img src="${icons[c]}" class="course-img">
+                    <h2>${c}</h2>
+                    <p>Click below to view complete course material.</p>
+                    <button onclick="location.href='course-content.html?course=${c}'">View Course</button>
+                </div>
+            `);
         });
     </script>
-
 </div>
 
 </body>

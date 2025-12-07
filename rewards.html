@@ -1,25 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Rewards - CyberShield</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Rewards • CyberShield Academy</title>
+<link rel="stylesheet" href="style.css" />
+<style>
+  .rewards-container{max-width:1000px;margin:28px auto;padding:18px}
+  .rewards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .reward-card{padding:16px;border-radius:12px;background:rgba(255,255,255,0.95);box-shadow:0 10px 26px rgba(20,30,50,0.06);display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+  .coupon-code{font-family:monospace;padding:8px 10px;border-radius:10px;background:#f7fdfd;border:1px dashed rgba(10,20,30,0.04)}
+</style>
 </head>
 <body>
+  <div id="doraemon-cursor" aria-hidden="true"><svg viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><defs><filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.25"/></filter></defs><g filter="url(#shadow)"><circle cx="32" cy="20" r="18" fill="#5fb0d6"/><ellipse cx="32" cy="35" rx="22" ry="14" fill="#ffe07a"/><rect x="14" y="32" width="36" height="6" rx="3" fill="#ffdd57" /><circle cx="32" cy="36" r="4" fill="#d86f00"/><path d="M22 24c3 6 18 6 21 0" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/></g></svg></div>
 
-<h1>Rewards & Coupons</h1>
+  <script src="course-data.js"></script>
+  <script src="script.js"></script>
 
-<div class="reward-card">
-    <h3>15% Off VPN</h3>
-    <p>Cost: 120 Credits</p>
-    <button onclick="redeem(120)">Redeem</button>
-</div>
+  <main class="rewards-container container">
+    <h2>Rewards & Coupons</h2>
+    <p class="small">Redeem credits for real-brand coupons. Codes are generated at redemption.</p>
 
-<div class="reward-card">
-    <h3>10% Off Password Manager</h3>
-    <p>Cost: 150 Credits</p>
-    <button onclick="redeem(150)">Redeem</button>
-</div>
+    <div style="margin:12px 0;font-weight:700">Your credits: <span id="my-credits">0</span></div>
+    <div id="rewards-grid" class="rewards-grid"></div>
 
-<script src="script.js"></script>
+    <div style="margin-top:16px;text-align:center">
+      <button class="btn ghost" onclick="renderRewards()">Refresh</button>
+      <button class="btn" onclick="location.href='dashboard.html'">Back to Dashboard</button>
+    </div>
+  </main>
+
+<script>
+  function genCoupon(pref) {
+    const rnd = Math.floor(Math.random()*90000)+10000;
+    const s = Math.random().toString(36).substring(2,6).toUpperCase();
+    return (pref ? pref.toUpperCase().slice(0,3) : "CYB") + "-" + rnd + "-" + s;
+  }
+
+  function renderRewards() {
+    requireLoginOrRedirect();
+    const grid = document.getElementById('rewards-grid');
+    const creditsEl = document.getElementById('my-credits');
+    creditsEl.innerText = getCredits();
+    grid.innerHTML = "";
+
+    const list = window.rewards || [];
+    list.forEach(r => {
+      const card = document.createElement('div'); card.className='reward-card glass-card';
+      card.innerHTML = `<div style="display:flex;justify-content:space-between;width:100%"><div><div class="reward-name" style="font-weight:900">${r.title}</div><div class="small" style="color:#6a7a80">${r.cost} credits</div></div><div style="display:flex;flex-direction:column;gap:8px"><button class="btn redeem-btn">Redeem</button></div></div><div class="coupon-area" style="margin-top:8px"></div>`;
+      grid.appendChild(card);
+
+      const redeemBtn = card.querySelector('.redeem-btn');
+      const couponArea = card.querySelector('.coupon-area');
+      redeemBtn.onclick = ()=>{
+        const myCredits = getCredits();
+        if (myCredits < r.cost) { alert("Not enough credits."); return; }
+        setCredits(myCredits - r.cost);
+        const code = genCoupon(r.title.replace(/\s+/g,''));
+        couponArea.innerHTML = `<div class="coupon-code">${code}</div><div class="small" style="margin-top:6px">Use at checkout. One-time code.</div>`;
+        animateToast("Redeemed: " + r.title);
+        document.getElementById('my-credits').innerText = getCredits();
+        refreshDashboardIfPresent();
+      };
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', renderRewards);
+</script>
 </body>
 </html>

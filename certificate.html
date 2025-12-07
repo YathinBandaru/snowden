@@ -1,39 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Certificate</title>
-    <style>
-        body { text-align: center; background: #CDEFFF; }
-        .certificate-box {
-            width: 70%;
-            margin: auto;
-            padding: 40px;
-            background: white;
-            border: 8px solid #00AEEF;
-            border-radius: 20px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Certificate • CyberShield Academy</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .cert-wrap{max-width:900px;margin:40px auto;padding:18px}
+    .cert-card{padding:28px;border-radius:16px;background:linear-gradient(180deg,#fff,#fbfbff);box-shadow:0 18px 40px rgba(10,20,40,0.06);text-align:center}
+    .cert-title{font-weight:900;color:#053b4a;font-size:22px}
+    .cert-name{font-size:34px;font-weight:900;margin:10px 0;color:#063b4a}
+  </style>
 </head>
 <body>
-
-<div class="certificate-box">
-    <h1>Certificate of Completion</h1>
-    <p>This is to certify that</p>
-    <h2 id="student-name"></h2>
-    <p>has successfully completed</p>
-    <h2 id="course-name"></h2>
-    <p>Date: <span id="date"></span></p>
-
-    <button onclick="window.print()">Print Certificate</button>
-</div>
+  <script src="script.js"></script>
+  <main class="cert-wrap">
+    <div class="cert-card">
+      <div class="cert-title">Certificate of Completion</div>
+      <p class="small">This certificate recognizes the learning achievements of</p>
+      <div id="cert-name" class="cert-name">Student Name</div>
+      <p class="small">Has completed the following CyberShield Academy courses:</p>
+      <div class="cert-list"><ul id="cert-courses"></ul></div>
+      <div style="margin-top:10px;color:#6a7a80">Credits earned: <span id="cert-credits">0</span></div>
+      <div style="margin-top:20px;display:flex;gap:12px;justify-content:center">
+        <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+        <button class="btn ghost" onclick="location.href='dashboard.html'">Back to Dashboard</button>
+      </div>
+    </div>
+  </main>
 
 <script>
-const p = new URLSearchParams(location.search);
-document.getElementById("student-name").innerText = localStorage.getItem("username");
-document.getElementById("course-name").innerText = p.get("course");
-document.getElementById("date").innerText = new Date().toLocaleDateString();
+  function loadCertificate() {
+    requireLoginOrRedirect();
+    const u = getUser();
+    if (!u) return;
+    document.getElementById('cert-name').innerText = u;
+    const ul = document.getElementById('cert-courses'); ul.innerHTML = "";
+    const completed = getCompletedCourses();
+    if (!completed.length) ul.innerHTML = "<li><em>No courses completed yet. Finish courses to earn a certificate.</em></li>";
+    else {
+      completed.forEach(cid => {
+        const c = (window.courses || []).find(x => x.id === cid);
+        const li = document.createElement('li');
+        li.innerText = c ? c.title : cid;
+        ul.appendChild(li);
+      });
+    }
+    document.getElementById('cert-credits').innerText = getCredits();
+  }
+  document.addEventListener('DOMContentLoaded', loadCertificate);
 </script>
-
 </body>
 </html>

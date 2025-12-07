@@ -1,27 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Scenarios - CyberShield</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Practice Scenarios • CyberShield Academy</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .scen-container{max-width:1000px;margin:28px auto;padding:18px}
+    .scen-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
+    .scen-card{padding:18px;border-radius:14px;background:rgba(255,255,255,0.9);box-shadow:0 10px 26px rgba(20,30,50,0.06)}
+    .scen-title{font-weight:800;color:#053b4a;margin-bottom:8px}
+    .scen-answers{display:flex;gap:8px}
+  </style>
 </head>
-
 <body>
+  <div id="doraemon-cursor" aria-hidden="true"><svg viewBox="0 0 64 64" width="32" height="32" xmlns="http://www.w3.org/2000/svg"><defs><filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.25"/></filter></defs><g filter="url(#shadow)"><circle cx="32" cy="20" r="18" fill="#5fb0d6"/><ellipse cx="32" cy="35" rx="22" ry="14" fill="#ffe07a"/><rect x="14" y="32" width="36" height="6" rx="3" fill="#ffdd57" /><circle cx="32" cy="36" r="4" fill="#d86f00"/><path d="M22 24c3 6 18 6 21 0" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" fill="none" opacity="0.9"/></g></svg></div>
 
-<h1>Real-Life Cyber Scenarios</h1>
+  <script src="course-data.js"></script>
+  <script src="script.js"></script>
 
-<div class="scenario-box">
-    <p>You receive a message asking for your bank OTP.</p>
-    <button onclick="scenarioAnswer(true)">Delete & Report (+10 Credits)</button>
-    <button onclick="scenarioAnswer(false)">Reply</button>
-</div>
+  <main class="scen-container container">
+    <h2 style="margin-bottom:6px">Real-life Scenarios</h2>
+    <p class="small">Decide whether each scenario is risky or safe — earn credits for correct answers.</p>
 
-<div class="scenario-box">
-    <p>A pop-up says your phone has a virus and asks you to download an app.</p>
-    <button onclick="scenarioAnswer(true)">Close Tab (+10 Credits)</button>
-    <button onclick="scenarioAnswer(false)">Download App</button>
-</div>
+    <div id="scenario-list" class="scen-list"></div>
 
-<script src="script.js"></script>
+    <div style="margin-top:18px;text-align:center">
+      <button class="btn" onclick="renderScenarios()">Refresh Scenarios</button>
+      <button class="btn ghost" onclick="location.href='dashboard.html'">Back to Dashboard</button>
+    </div>
+  </main>
+
+<script>
+  function renderScenarios() {
+    requireLoginOrRedirect();
+    const holder = document.getElementById('scenario-list');
+    holder.innerHTML = "";
+    if (!window.scenarios || !Array.isArray(window.scenarios)) {
+      holder.innerHTML = "<div style='padding:12px'>No scenarios available.</div>";
+      return;
+    }
+    window.scenarios.forEach((s, idx) => {
+      const card = document.createElement('div');
+      card.className = 'scen-card glass-card';
+      card.innerHTML = `<div class="scen-title">${idx+1}. ${s.title}</div>
+                        <div class="small" style="margin-bottom:12px">${s.explanation ? s.explanation : ''}</div>
+                        <div class="scen-answers">
+                          <button class="btn" data-answer="risky">This is risky</button>
+                          <button class="btn ghost" data-answer="safe">This is safe</button>
+                        </div>
+                        <div class="scen-feedback" style="margin-top:12px"></div>`;
+      holder.appendChild(card);
+
+      const riskyBtn = card.querySelector('button[data-answer="risky"]');
+      const safeBtn = card.querySelector('button[data-answer="safe"]');
+      const feedback = card.querySelector('.scen-feedback');
+
+      riskyBtn.onclick = ()=> {
+        const correct = Boolean(s.correct);
+        if (correct) { addCredits(10); feedback.innerText = "Correct — risky! +10 credits"; feedback.style.color = "#0b663e"; }
+        else { feedback.innerText = "Not quite — this scenario is safer."; feedback.style.color = "#7a1a1a"; }
+      };
+
+      safeBtn.onclick = ()=> {
+        const correct = !Boolean(s.correct);
+        if (correct) { addCredits(10); feedback.innerText = "Correct — safe! +10 credits"; feedback.style.color = "#0b663e"; }
+        else { feedback.innerText = "Not quite — that was risky."; feedback.style.color = "#7a1a1a"; }
+      };
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', renderScenarios);
+</script>
 </body>
 </html>
-

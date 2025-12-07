@@ -6,7 +6,7 @@ window.courses = [
   {
     id: "phishing",
     title: "Phishing Awareness",
-    image: "images/courses/phishing.png",
+    image: "https://cdn-icons-png.flaticon.com/512/1055/1055646.png",
     progress: 0,
     description: "Understand phishing — why attackers impersonate trusted sources and how to detect and respond to scam emails, SMS, and social messages.",
     learningObjectives: [
@@ -28,7 +28,7 @@ window.courses = [
   {
     id: "passwords",
     title: "Password Safety",
-    image: "images/courses/password.png",
+    image: "https://cdn-icons-png.flaticon.com/512/3064/3064197.png",
     progress: 0,
     description: "Learn to create, manage, and protect strong credentials. Understand 2FA, password managers, secure reset flows, and safe recovery practices.",
     learningObjectives: [
@@ -50,7 +50,7 @@ window.courses = [
   {
     id: "safe-browsing",
     title: "Safe Browsing",
-    image: "images/courses/browsing.png",
+    image: "https://cdn-icons-png.flaticon.com/512/1828/1828479.png",
     progress: 0,
     description: "Best practices to browse safely: checking site security, preventing drive-by downloads, using browser privacy features, and avoiding risky extensions.",
     learningObjectives: [
@@ -72,7 +72,7 @@ window.courses = [
   {
     id: "social-media",
     title: "Social Media Safety",
-    image: "images/courses/social.png",
+    image: "https://cdn-icons-png.flaticon.com/512/1384/1384063.png",
     progress: 0,
     description: "Manage your digital footprint: keep privacy controls tight, avoid oversharing, and recognize scams and social-engineering attempts on apps and messaging platforms.",
     learningObjectives: [
@@ -94,7 +94,7 @@ window.courses = [
   {
     id: "malware",
     title: "Device Security & Malware",
-    image: "images/courses/malware.png",
+    image: "https://cdn-icons-png.flaticon.com/512/1828/1828843.png",
     progress: 0,
     description: "Detect, prevent, and recover from malware threats. Learn about common malware types, ransomware, secure backups, and how to harden devices.",
     learningObjectives: [
